@@ -1,0 +1,9 @@
+suites:
+    session_handler_suite:
+        namespace: Nofw\Session
+        psr4_prefix: Nofw\Session
+formatter.name: pretty
+extensions:
+    PhpSpecCodeCoverage\CodeCoverageExtension:
+        format: clover
+        output: build/coverage.xml

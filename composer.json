@@ -1,6 +1,6 @@
 {
     "name": "nofw/session-handlers",
-    "description": "Package providing various `SessionHandlerInterface` implementations",
+    "description": "Package providing various SessionHandlerInterface implementations",
     "license": "MIT",
     "keywords": ["session", "handler"],
     "homepage": "https://github.com/nofw",
@@ -11,7 +11,14 @@
         }
     ],
     "require": {
-        "php": "^5.4 || ^7.0"
+        "php": "^5.6 || ^7.0"
+    },
+    "require-dev": {
+        "doctrine/cache": "^1.5",
+        "psr/cache": "^1.0",
+        "psr/simple-cache": "^1.0",
+        "phpspec/phpspec": "^3.0",
+        "henrikbjorn/phpspec-code-coverage": "^3.0"
     },
     "autoload": {
         "psr-4": {

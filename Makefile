@@ -14,7 +14,11 @@ clean: ## Clean the working area
 	rm -rf build/ vendor/
 
 test: ## Run tests
-	@echo "No tests defined" && exit 1
+ifdef COVERAGE
+	@vendor/bin/phpspec run -c phpspec.ci.yml
+else
+	@vendor/bin/phpspec run
+endif
 
 docker: ## Execute commands inside a Docker container
 	docker run --rm -it -v $$PWD:/app -w /app $(DOCKER_IMAGE) make $(filter-out docker, $(MAKECMDGOALS))

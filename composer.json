@@ -1,0 +1,28 @@
+{
+    "name": "nofw/session-handlers",
+    "description": "Package providing various `SessionHandlerInterface` implementations",
+    "license": "MIT",
+    "keywords": ["session", "handler"],
+    "homepage": "https://github.com/nofw",
+    "authors": [
+        {
+            "name": "Márk Sági-Kazár",
+            "email": "mark.sagikazar@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^5.4 || ^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nofw\\Session\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}

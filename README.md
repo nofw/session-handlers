@@ -20,6 +20,36 @@ $ composer require nofw/session-handlers
 
 ## Usage
 
+This package provides three Session Handler implementations:
+
+- PSR-6
+- PSR-16
+- Doctrine Cache
+
+Choose your backend and instantiate and register handler.
+
+``` php
+$cache = new ImaginaryCacheItemPool();
+$handler = new \Nofw\Session\CacheSessionHandler($cache);
+
+session_set_save_handler($handler);
+```
+
+Use your session as usual.
+
+
+### Logging
+
+The [SessionHandlerInterface](http://php.net/manual/en/class.sessionhandlerinterface.php) does not allow throwing exceptions to indicate failure. Instead it expects the handler to return empty values (empty string or false). However, the PSR-X implementations do throw exceptions. To adhere the interface and to not lose the ability to detect failures, these implementations accept a PSR-3 logger as their second constructor argument and also implement the `LoggerAwareInterface`.
+
+``` php
+$cache = new ImaginaryCacheItemPool();
+$logger = new Monolog\Logger('nofw')
+$handler = new \Nofw\Session\CacheSessionHandler($cache, $logger);
+```
+
+The caught exceptions are logged as errors.
+
 
 ## Testing
 

@@ -2,6 +2,7 @@
 
 namespace spec\Nofw\Session;
 
+use Nofw\Session\SimpleCacheSessionHandler;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
@@ -15,12 +16,12 @@ class SimpleCacheSessionHandlerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Nofw\Session\SimpleCacheSessionHandler');
+        $this->shouldHaveType(SimpleCacheSessionHandler::class);
     }
 
     function it_is_a_session_handler()
     {
-        $this->shouldImplement('SessionHandlerInterface');
+        $this->shouldImplement(\SessionHandlerInterface::class);
     }
 
     function it_closes_the_handler()

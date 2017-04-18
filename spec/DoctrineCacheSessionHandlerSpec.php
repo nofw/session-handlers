@@ -3,6 +3,7 @@
 namespace spec\Nofw\Session;
 
 use Doctrine\Common\Cache\Cache;
+use Nofw\Session\DoctrineCacheSessionHandler;
 use PhpSpec\ObjectBehavior;
 
 class DoctrineCacheSessionHandlerSpec extends ObjectBehavior
@@ -14,12 +15,12 @@ class DoctrineCacheSessionHandlerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Nofw\Session\DoctrineCacheSessionHandler');
+        $this->shouldHaveType(DoctrineCacheSessionHandler::class);
     }
 
     function it_is_a_session_handler()
     {
-        $this->shouldImplement('SessionHandlerInterface');
+        $this->shouldImplement(\SessionHandlerInterface::class);
     }
 
     function it_closes_the_handler()

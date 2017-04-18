@@ -2,6 +2,7 @@
 
 namespace spec\Nofw\Session;
 
+use Nofw\Session\CacheSessionHandler;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use PhpSpec\ObjectBehavior;
@@ -15,12 +16,12 @@ class CacheSessionHandlerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Nofw\Session\CacheSessionHandler');
+        $this->shouldHaveType(CacheSessionHandler::class);
     }
 
     function it_is_a_session_handler()
     {
-        $this->shouldImplement('SessionHandlerInterface');
+        $this->shouldImplement(\SessionHandlerInterface::class);
     }
 
     function it_closes_the_handler()

@@ -2,6 +2,10 @@
 
 namespace Nofw\Session;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
@@ -10,19 +14,23 @@ use Psr\SimpleCache\InvalidArgumentException;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-final class SimpleCacheSessionHandler implements \SessionHandlerInterface
+final class SimpleCacheSessionHandler implements \SessionHandlerInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var CacheInterface
      */
     private $cache;
 
     /**
-     * @param CacheInterface $cache
+     * @param CacheInterface       $cache
+     * @param LoggerInterface|null $logger
      */
-    public function __construct(CacheInterface $cache)
+    public function __construct(CacheInterface $cache, LoggerInterface $logger = null)
     {
         $this->cache = $cache;
+        $this->logger = $logger ?? new NullLogger();
     }
 
     /**
@@ -41,6 +49,15 @@ final class SimpleCacheSessionHandler implements \SessionHandlerInterface
         try {
             return $this->cache->delete($session_id);
         } catch (InvalidArgumentException $e) {
+            $this->logger->error(
+                $e->getMessage(),
+                [
+                    'exception' => $e,
+                    'session_id' => is_scalar($session_id) ? $session_id : '** Non scalar session ID **',
+                    'operation' => 'destroy',
+                ]
+            );
+
             return false;
         }
     }
@@ -69,6 +86,15 @@ final class SimpleCacheSessionHandler implements \SessionHandlerInterface
         try {
             return $this->cache->get($session_id);
         } catch (InvalidArgumentException $e) {
+            $this->logger->error(
+                $e->getMessage(),
+                [
+                    'exception' => $e,
+                    'session_id' => is_scalar($session_id) ? $session_id : '** Non scalar session ID **',
+                    'operation' => 'read',
+                ]
+            );
+
             return '';
         }
     }
@@ -81,6 +107,15 @@ final class SimpleCacheSessionHandler implements \SessionHandlerInterface
         try {
             return $this->cache->set($session_id, $session_data);
         } catch (InvalidArgumentException $e) {
+            $this->logger->error(
+                $e->getMessage(),
+                [
+                    'exception' => $e,
+                    'session_id' => is_scalar($session_id) ? $session_id : '** Non scalar session ID **',
+                    'operation' => 'write',
+                ]
+            );
+
             return false;
         }
     }

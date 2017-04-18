@@ -3,6 +3,7 @@
 namespace Nofw\Session;
 
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 
 /**
  * PSR-6 Session handler implementation.
@@ -37,7 +38,11 @@ final class CacheSessionHandler implements \SessionHandlerInterface
      */
     public function destroy($session_id)
     {
-        return $this->pool->deleteItem($session_id);
+        try {
+            return $this->pool->deleteItem($session_id);
+        } catch (InvalidArgumentException $e) {
+            return false;
+        }
     }
 
     /**
@@ -61,13 +66,17 @@ final class CacheSessionHandler implements \SessionHandlerInterface
      */
     public function read($session_id)
     {
-        $item = $this->pool->getItem($session_id);
+        try {
+            $item = $this->pool->getItem($session_id);
 
-        if ($item->isHit()) {
-            return $item->get();
+            if ($item->isHit()) {
+                return $item->get();
+            }
+
+            return '';
+        } catch (InvalidArgumentException $e) {
+            return '';
         }
-
-        return '';
     }
 
     /**
@@ -75,10 +84,14 @@ final class CacheSessionHandler implements \SessionHandlerInterface
      */
     public function write($session_id, $session_data)
     {
-        $item = $this->pool->getItem($session_id);
+        try {
+            $item = $this->pool->getItem($session_id);
 
-        $item->set($session_data);
+            $item->set($session_data);
 
-        return $this->pool->save($item);
+            return $this->pool->save($item);
+        } catch (InvalidArgumentException $e) {
+            return false;
+        }
     }
 }

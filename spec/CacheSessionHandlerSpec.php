@@ -5,6 +5,7 @@ namespace spec\Nofw\Session;
 use Nofw\Session\CacheSessionHandler;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 
 class CacheSessionHandlerSpec extends ObjectBehavior
@@ -43,6 +44,13 @@ class CacheSessionHandlerSpec extends ObjectBehavior
         $this->destroy('id')->shouldReturn(false);
     }
 
+    function it_seriously_fails_destroying_the_session(CacheItemPoolInterface $pool)
+    {
+        $pool->deleteItem('id')->willThrow(MockCacheInvalidArgumentException::class);
+
+        $this->destroy('id')->shouldReturn(false);
+    }
+
     function it_collects_garbage()
     {
         $this->gc(1234)->shouldReturn(true);
@@ -71,6 +79,13 @@ class CacheSessionHandlerSpec extends ObjectBehavior
         $this->read('id')->shouldReturn('');
     }
 
+    function it_seriously_fails_reading_the_session(CacheItemPoolInterface $pool)
+    {
+        $pool->getItem('id')->willThrow(MockCacheInvalidArgumentException::class);
+
+        $this->read('id')->shouldReturn('');
+    }
+
     function it_writes_the_session(CacheItemPoolInterface $pool, CacheItemInterface $item)
     {
         $pool->getItem('id')->willReturn($item);
@@ -88,4 +103,13 @@ class CacheSessionHandlerSpec extends ObjectBehavior
 
         $this->write('id', 'data')->shouldReturn(false);
     }
+
+    function it_seriously_fails_writing_the_session(CacheItemPoolInterface $pool)
+    {
+        $pool->getItem('id')->willThrow(MockCacheInvalidArgumentException::class);
+
+        $this->write('id', 'data')->shouldReturn(false);
+    }
 }
+
+class MockCacheInvalidArgumentException extends \Exception implements InvalidArgumentException {}

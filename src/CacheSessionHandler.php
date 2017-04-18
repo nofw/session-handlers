@@ -89,10 +89,6 @@ final class CacheSessionHandler implements \SessionHandlerInterface, LoggerAware
             if ($item->isHit()) {
                 return $item->get();
             }
-
-            $this->logger->debug('Session not found in the storage', ['sessionId' => $session_id]);
-
-            return '';
         } catch (InvalidArgumentException $e) {
             $this->logger->error(
                 $e->getMessage(),
@@ -102,9 +98,9 @@ final class CacheSessionHandler implements \SessionHandlerInterface, LoggerAware
                     'operation' => 'read',
                 ]
             );
-
-            return '';
         }
+
+        return '';
     }
 
     /**

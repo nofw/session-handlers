@@ -45,7 +45,7 @@ class SimpleCacheSessionHandlerSpec extends ObjectBehavior
 
     function it_seriously_fails_destroying_the_session(CacheInterface $cache)
     {
-        $cache->delete('id')->willThrow(MockInvalidArgumentException::class);
+        $cache->delete('id')->willThrow(MockSimpleCacheInvalidArgumentException::class);
 
         $this->destroy('id')->shouldReturn(false);
     }
@@ -69,7 +69,7 @@ class SimpleCacheSessionHandlerSpec extends ObjectBehavior
 
     function it_fails_reading_the_session(CacheInterface $cache)
     {
-        $cache->get('id')->willThrow(MockInvalidArgumentException::class);
+        $cache->get('id')->willThrow(MockSimpleCacheInvalidArgumentException::class);
 
         $this->read('id')->shouldReturn('');
     }
@@ -90,10 +90,10 @@ class SimpleCacheSessionHandlerSpec extends ObjectBehavior
 
     function it_seriously_fails_writing_the_session(CacheInterface $cache)
     {
-        $cache->set('id', 'data')->willThrow(MockInvalidArgumentException::class);
+        $cache->set('id', 'data')->willThrow(MockSimpleCacheInvalidArgumentException::class);
 
         $this->write('id', 'data')->shouldReturn(false);
     }
 }
 
-class MockInvalidArgumentException extends \Exception implements InvalidArgumentException {}
+class MockSimpleCacheInvalidArgumentException extends \Exception implements InvalidArgumentException {}

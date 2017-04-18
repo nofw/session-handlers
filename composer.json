@@ -21,6 +21,9 @@
         "phpspec/phpspec": "^3.0",
         "henrikbjorn/phpspec-code-coverage": "^3.0"
     },
+    "suggest": {
+        "psr/log-implementation": "Log errors of the PSR-6 and PSR-16 implementations"
+    },
     "autoload": {
         "psr-4": {
             "Nofw\\Session\\": "src/"
